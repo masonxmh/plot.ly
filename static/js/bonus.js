@@ -16,8 +16,7 @@ function gaugePlot(sample){
     var pathY = String(y);
     var pathEnd = " Z";
     var path = mainPath.concat(pathX, space, pathY, pathEnd);
-    console.log(path);
-
+    // console.log(path);
 
     var data = [{
         type: "category",
@@ -67,8 +66,8 @@ function gaugePlot(sample){
             }
         ],
         title: "Belly Button Washing Frequency <br> Scrubs per Week",
-        height: 600,
-        width: 600,
+        height: 500,
+        width: 500,
         xaxis: {
             zeroline:false,
             showticklabels: false,

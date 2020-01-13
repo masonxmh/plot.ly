@@ -125,7 +125,7 @@ function init(){
                 b: 40
               },
             width:400,
-            height:400,
+            height:500,
         }
         Plotly.newPlot("bar", barPlot(odata),layout);
 
@@ -138,8 +138,14 @@ function init(){
                 title: {
                   text: 'OTU ID',
                 }
-          }
-     
+            },
+            margin: {
+                // l: 100,
+                // r: 20,
+                t: 0,
+                // b: 40
+              },
+
         } ;
         Plotly.newPlot("bubble",bubblePlot(otudata),layout);
 
