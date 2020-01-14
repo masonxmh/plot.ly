@@ -72,7 +72,9 @@ function bubblePlot(sample){
         // colorscale: 'YIGnBu',
         marker:{
             color: otuids,          
-            size: sampleValues 
+            size: sampleValues,
+            autocolorscale: false,
+            colorscale: 'Earth'
         }
     };
     var data = [trace];
