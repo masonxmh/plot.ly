@@ -100,15 +100,15 @@ function bubblePlot(sample){
 
 
 //On change
-d3.select("#selDataset").on("change", updatePlotly);
+// d3.select("#selDataset").on("change", updatePlotly);
 
 //Render Page
-function updatePlotly(){
+function optionChanged(selectData){
     //clear table
     demo.html("");
     json.then((data) =>{
         //Assign the value of the dropdown menu option to a variable
-        var selectData = dropdownMenu.property("value");
+        // var selectData = dropdownMenu.property("value");
         //Update Demographic Info
         var mdata = data.metadata.filter(x => x.id === parseInt(selectData));
         metadata(mdata);
