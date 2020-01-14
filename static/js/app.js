@@ -118,9 +118,9 @@ function updatePlotly(){
         var otuids = ids.map(x => 'OTU '+ x);
         var sampleValues = otudata[0].sample_values;
         var otulabels = otudata[0].otu_labels;
-        var xbar = [];
-        var ybar = [];
-        var hovertext =[];
+        var xBar = [];
+        var yBar = [];
+        var hovertextBar =[];
         xBar = sampleValues.slice(0,10).reverse(),
         yBar = otuids.slice(0,10).reverse(),
         hovertextBar = otulabels.slice(0,10).reverse(),
