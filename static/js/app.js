@@ -10,14 +10,10 @@ var demo=d3.select("#sample-metadata");
 function dropdown(){
     json.then((data) => {
         var id = data.names;
-        id.forEach(i=>{
-            dropdownMenu.append("option").text(i);
-        })
+        id.forEach(i=>dropdownMenu.append("option").text(i))
     })
-}
+};
 dropdown();
-
-
 
 //metadata function
 function metadata(mdata){
@@ -30,10 +26,9 @@ function metadata(mdata){
 function barPlot(sample){
 
     var ids = sample[0].otu_ids;
-    var otuids = ids.map(x => 'OTU '+ x.toString());
+    var otuids = ids.map(x => 'OTU '+ x);
     var sampleValues = sample[0].sample_values;
     var otulabels = sample[0].otu_labels;
-    
     //Create the Trace
     var trace = {
         x: sampleValues.slice(0,10).reverse(),
@@ -43,11 +38,22 @@ function barPlot(sample){
         type: "bar",
         orientation: "h"
     };
-
     //Create the data array for the plot
     var data = [trace];
+    //Create layout
+    var layout = {
+        margin: {
+            l: 100,
+            r: 20,
+            t: 0,
+            b: 40
+        },
+        width:400,
+        height:500,
+    };
+    
     //console.log(data);
-    return data;
+    return Plotly.newPlot("bar", data, layout);
 }
 
 //bubble plot
@@ -59,48 +65,77 @@ function bubblePlot(sample){
     
     //Create the trace
     var trace ={
-        y: sampleValues,
         x: otuids,
-        mode: "markers",
+        y: sampleValues,
         text: otulabels,
+        mode: "markers",
+        // colorscale: 'YIGnBu',
         marker:{
-            color: otuids,
+            color: otuids,          
             size: sampleValues 
         }
-    }
+    };
     var data = [trace];
-    return data;
+    var layout = {
+        // title: 'Bubble Chart Hover Text',
+        showlegend: false,
+        xaxis: {
+            title: {
+              text: 'OTU ID',
+            }
+        },
+        margin: {
+            // l: 100,
+            // r: 20,
+            t: 0,
+            // b: 40
+          },
+
+    } ;
+    
+    return Plotly.newPlot("bubble",data,layout);
 };
-
-//gauge plot
-
 
 
 //On change
-d3.select("#selDataset").on("change", renderPage);
+d3.select("#selDataset").on("change", updatePlotly);
 
 //Render Page
-function renderPage(){
+function updatePlotly(){
     //clear table
     demo.html("");
     json.then((data) =>{
         //Assign the value of the dropdown menu option to a variable
         var selectData = dropdownMenu.property("value");
-        //Render Demographic info
+        //Update Demographic Info
         var mdata = data.metadata.filter(x => x.id === parseInt(selectData));
         metadata(mdata);
-        //Render bar plot
+        //Update bar plot 
         var otudata = data.samples.filter(x =>x.id === selectData);
-        var x = [];
-        var y = [];
-        bardata = barPlot(otudata);
-        Plotly.restyle("bar", "x", [bardata[0].x] );
-        Plotly.restyle("bar", "y", [bardata[0].y] );
-        //Render bubble plot
+        var ids = otudata[0].otu_ids;
+        var otuids = ids.map(x => 'OTU '+ x);
+        var sampleValues = otudata[0].sample_values;
+        var otulabels = otudata[0].otu_labels;
+        var xbar = [];
+        var ybar = [];
+        var hovertext =[];
+        xBar = sampleValues.slice(0,10).reverse(),
+        yBar = otuids.slice(0,10).reverse(),
+        hovertextBar = otulabels.slice(0,10).reverse(),
+        Plotly.restyle("bar", "x", [xBar] );
+        Plotly.restyle("bar", "y", [yBar] );
+        Plotly.restyle("bar", "hovertext", [hovertextBar] );
+        //Update bubble plot
         var otudata = data.samples.filter(x =>x.id === selectData);
-        bubbledata = bubblePlot(otudata);
-        Plotly.restyle("bubble", "x", [bubbledata[0].x] );
-        Plotly.restyle("bubble", "y", [bubbledata[0].y] );
+        var xBubble = [];
+        var yBubble = [];
+        var textBubble = [];
+        xBubble = ids;
+        yBubble = sampleValues;
+        textBubble = otulabels;
+        Plotly.restyle("bubble", "x", [xBubble] );
+        Plotly.restyle("bubble", "y", [yBubble] );
+        Plotly.restyle("bubble","text",[textBubble]);
         //Render Gauge plot
         gaugePlot(mdata);
     })
@@ -117,40 +152,13 @@ function init(){
 
         //Init barplot
         var odata = data.samples.filter(x => x.id === initId.toString());
-        var layout = {
-            margin: {
-                l: 100,
-                r: 20,
-                t: 0,
-                b: 40
-              },
-            width:400,
-            height:500,
-        }
-        Plotly.newPlot("bar", barPlot(odata),layout);
+        barPlot(odata);
 
         //Init bubble plot
         var otudata = data.samples.filter(x => x.id === initId.toString());
-        var layout = {
-            // title: 'Bubble Chart Hover Text',
-            showlegend: false,
-            xaxis: {
-                title: {
-                  text: 'OTU ID',
-                }
-            },
-            margin: {
-                // l: 100,
-                // r: 20,
-                t: 0,
-                // b: 40
-              },
-
-        } ;
-        Plotly.newPlot("bubble",bubblePlot(otudata),layout);
-
+        bubblePlot(otudata);
         //Gauge plot
-        gaugePlot(mdata)
+        gaugePlot(mdata);
     })
 }
 init();

@@ -65,7 +65,7 @@ function gaugePlot(sample){
                 }
             }
         ],
-        title: "Belly Button Washing Frequency <br> Scrubs per Week",
+        title: "<b>Belly Button Washing Frequency</b> <br> Scrubs per Week",
         height: 500,
         width: 500,
         xaxis: {
