@@ -45,8 +45,8 @@ function barPlot(sample){
         margin: {
             l: 100,
             r: 20,
-            t: 0,
-            b: 40
+            t: 20,
+            b: 20
         },
         width:400,
         height:500,
@@ -89,7 +89,7 @@ function bubblePlot(sample){
         margin: {
             // l: 100,
             // r: 20,
-            t: 0,
+            t: 20,
             // b: 40
           },
 
