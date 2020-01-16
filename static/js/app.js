@@ -22,7 +22,7 @@ function metadata(mdata){
     })
 }
 
-//bar plot
+//bar plot function
 function barPlot(sample){
 
     var ids = sample[0].otu_ids;
@@ -51,12 +51,11 @@ function barPlot(sample){
         width:400,
         height:500,
     };
-    
     //console.log(data);
     return Plotly.newPlot("bar", data, layout);
 }
 
-//bubble plot
+//bubble plot function
 function bubblePlot(sample){
 
     var otuids = sample[0].otu_ids;
@@ -94,15 +93,10 @@ function bubblePlot(sample){
           },
 
     } ;
-    
     return Plotly.newPlot("bubble",data,layout);
 };
 
-
-//On change
-// d3.select("#selDataset").on("change", updatePlotly);
-
-//Render Page
+//Update Page
 function optionChanged(selectData){
     //clear table
     demo.html("");
@@ -114,6 +108,7 @@ function optionChanged(selectData){
         metadata(mdata);
 
         //Update bar plot 
+        //define bar plot input variables
         var otudata = data.samples.filter(x =>x.id === selectData);
         var ids = otudata[0].otu_ids;
         var otuids = ids.map(x => 'OTU '+ x);
@@ -125,23 +120,26 @@ function optionChanged(selectData){
         xBar = sampleValues.slice(0,10).reverse(),
         yBar = otuids.slice(0,10).reverse(),
         hovertextBar = otulabels.slice(0,10).reverse(),
+        //restyle bar plot
         Plotly.restyle("bar", "x", [xBar] );
         Plotly.restyle("bar", "y", [yBar] );
         Plotly.restyle("bar", "hovertext", [hovertextBar] );
 
         //Update bubble plot
-        // var otudata = data.samples.filter(x =>x.id === selectData);
+        //define bubble plot input varibales
         var xBubble = [];
         var yBubble = [];
         var textBubble = [];
         xBubble = ids;
         yBubble = sampleValues;
         textBubble = otulabels;
+        //restyle bubble plot
         Plotly.restyle("bubble", "x", [xBubble] );
         Plotly.restyle("bubble", "y", [yBubble] );
         Plotly.restyle("bubble","text",[textBubble]);
 
         //Update Gauge plot
+        //define data varibles
         var wfreq = mdata[0].wfreq;
         textGauge = [];
         textGauge = wfreq;
@@ -152,7 +150,7 @@ function optionChanged(selectData){
         var radians = (degrees * Math.PI) / 180;
         var x = radius * Math.cos(radians);
         var y = radius * Math.sin(radians);
-
+        //define layout variables
         var mainPath = "M-.0 -0.05 L  .0 0.05 L";
         var pathX = String(x);
         var space = " ";
@@ -191,8 +189,8 @@ function init(){
         barPlot(odata);
 
         //Init bubble plot
-        var otudata = data.samples.filter(x => x.id === initId.toString());
-        bubblePlot(otudata);
+        bubblePlot(odata);
+
         //Gauge plot
         gaugePlot(mdata);
     })
