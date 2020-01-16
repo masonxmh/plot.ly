@@ -112,6 +112,7 @@ function optionChanged(selectData){
         //Update Demographic Info
         var mdata = data.metadata.filter(x => x.id === parseInt(selectData));
         metadata(mdata);
+
         //Update bar plot 
         var otudata = data.samples.filter(x =>x.id === selectData);
         var ids = otudata[0].otu_ids;
@@ -127,8 +128,9 @@ function optionChanged(selectData){
         Plotly.restyle("bar", "x", [xBar] );
         Plotly.restyle("bar", "y", [yBar] );
         Plotly.restyle("bar", "hovertext", [hovertextBar] );
+
         //Update bubble plot
-        var otudata = data.samples.filter(x =>x.id === selectData);
+        // var otudata = data.samples.filter(x =>x.id === selectData);
         var xBubble = [];
         var yBubble = [];
         var textBubble = [];
@@ -138,8 +140,40 @@ function optionChanged(selectData){
         Plotly.restyle("bubble", "x", [xBubble] );
         Plotly.restyle("bubble", "y", [yBubble] );
         Plotly.restyle("bubble","text",[textBubble]);
-        //Render Gauge plot
-        gaugePlot(mdata);
+
+        //Update Gauge plot
+        var wfreq = mdata[0].wfreq;
+        textGauge = [];
+        textGauge = wfreq;
+        Plotly.restyle("gauge","text",[textGauge],0);
+        var level = wfreq*20;
+        var degrees = 180 - level;
+        var radius = 0.5; 
+        var radians = (degrees * Math.PI) / 180;
+        var x = radius * Math.cos(radians);
+        var y = radius * Math.sin(radians);
+
+        var mainPath = "M-.0 -0.05 L  .0 0.05 L";
+        var pathX = String(x);
+        var space = " ";
+        var pathY = String(y);
+        var pathEnd = " Z";
+        var path = mainPath.concat(pathX, space, pathY, pathEnd);
+        update = {
+            shapes: [
+                {
+                    type: "path",
+                    path: path,
+                    fillcolor: "850000",
+                    line: {
+                        color: "850000"
+                    }
+                }
+            ]
+        };
+        console.log(path);
+        Plotly.relayout("gauge",update)
+        
     })
 }
 

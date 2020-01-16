@@ -1,7 +1,7 @@
 function gaugePlot(sample){
     
     var wfreq = sample[0].wfreq;
-    console.log(wfreq);
+    // console.log(wfreq);
     var level = wfreq*20;
     var degrees = 180 - level;
     var radius = 0.5; 
@@ -24,8 +24,8 @@ function gaugePlot(sample){
         y:[0],
         marker: { size: 12, color: "850000" },
         showlegend: false,
-        text: level,
-        hoverinfo: "text+name"
+        text: wfreq,
+        hoverinfo: "text"
     },
     {
         values: [50/9, 50/9, 50/9, 50/9, 50/9, 50/9, 50/9, 50/9, 50/9, 50],
@@ -82,5 +82,5 @@ function gaugePlot(sample){
         }
     }
 
-Plotly.newPlot("gauge",data,layout);
+    return Plotly.newPlot("gauge", data, layout);
 }
