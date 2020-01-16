@@ -108,7 +108,7 @@ function optionChanged(selectData){
         metadata(mdata);
 
         //Update bar plot 
-        //define bar plot input variables
+        //Define bar plot input variables
         var otudata = data.samples.filter(x =>x.id === selectData);
         var ids = otudata[0].otu_ids;
         var otuids = ids.map(x => 'OTU '+ x);
@@ -117,32 +117,35 @@ function optionChanged(selectData){
         var xBar = [];
         var yBar = [];
         var hovertextBar =[];
+        //Define update varibles
         xBar = sampleValues.slice(0,10).reverse(),
         yBar = otuids.slice(0,10).reverse(),
         hovertextBar = otulabels.slice(0,10).reverse(),
-        //restyle bar plot
+        //Restyle bar plot
         Plotly.restyle("bar", "x", [xBar] );
         Plotly.restyle("bar", "y", [yBar] );
         Plotly.restyle("bar", "hovertext", [hovertextBar] );
 
         //Update bubble plot
-        //define bubble plot input varibales
+        //Define bubble plot input varibales
         var xBubble = [];
         var yBubble = [];
         var textBubble = [];
+        //Define update varibles
         xBubble = ids;
         yBubble = sampleValues;
         textBubble = otulabels;
-        //restyle bubble plot
+        //Restyle bubble plot
         Plotly.restyle("bubble", "x", [xBubble] );
         Plotly.restyle("bubble", "y", [yBubble] );
         Plotly.restyle("bubble","text",[textBubble]);
 
         //Update Gauge plot
-        //define data varibles
+        //Define data varibles
         var wfreq = mdata[0].wfreq;
         textGauge = [];
         textGauge = wfreq;
+        //Restyle gauge plot
         Plotly.restyle("gauge","text",[textGauge],0);
         var level = wfreq*20;
         var degrees = 180 - level;
@@ -169,7 +172,8 @@ function optionChanged(selectData){
                 }
             ]
         };
-        console.log(path);
+        console.log(path); //test if gauge arm updated
+        //Replayout gauge plot
         Plotly.relayout("gauge",update)
         
     })
